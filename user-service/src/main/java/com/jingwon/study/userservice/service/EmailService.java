@@ -13,7 +13,7 @@ public class EmailService {
     @Async
     public void sendVerificationEmail(String email, String verificationToken) {
         String subject = "[Jingwon] 이메일 인증 요청";
-        String verificationLink = "http://localhost/verify-email?token=" + verificationToken;
+        String verificationLink = "http://localhost:5051/verify-email?token=" + verificationToken;
 
         String body = String.format(
             """

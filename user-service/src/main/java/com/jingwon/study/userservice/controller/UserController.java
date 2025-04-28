@@ -5,9 +5,7 @@ import com.jingwon.study.userservice.dto.OAuthSignupRequest;
 import com.jingwon.study.userservice.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +21,12 @@ public class UserController {
     @PostMapping("/signup/oauth")
     public ResponseEntity<Void> oauthSignUp(@RequestBody OAuthSignupRequest request){
         userFacade.signupOAuthUser(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/verify-email")
+    public ResponseEntity<Void> verifyEmail(@RequestParam String token){
+        userFacade.verifyEmailToken(token);
         return ResponseEntity.ok().build();
     }
 }

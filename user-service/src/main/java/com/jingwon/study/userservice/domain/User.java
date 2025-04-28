@@ -43,6 +43,9 @@ public class User {
     @Column
     private String providerId;
 
+    public void activate(){
+        this.emailVerified = true;
+    }
     public static User createLocal(String email, String rawPassword, String name, UserRole role, String token, PasswordEncoder encoder) {
         return User.builder()
                 .email(email)

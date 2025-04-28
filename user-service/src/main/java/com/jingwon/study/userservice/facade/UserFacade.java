@@ -28,4 +28,8 @@ public class UserFacade {
 
     public void signupOAuthUser(OAuthSignupRequest request) {
     }
+
+    public void verifyEmailToken(String token) {
+        userService.verifyEmailTokenAndActivateUser(token);
+    }
 }

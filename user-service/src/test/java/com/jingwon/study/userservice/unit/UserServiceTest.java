@@ -13,8 +13,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -62,5 +63,31 @@ public class UserServiceTest {
 
         // then
         verify(userRepository).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("유효한 토큰으로 이메일 인증 후 유저 상태가 활성화되어야 한다.")
+    void should_verify_emailToken() {
+        String token = "email-token";
+        User user = User.createLocal("jingwon@test.com","testPassword","이진권", UserRole.CUSTOMER, token, passwordEncoder);
+        when(userRepository.findByEmailVerificationToken(token)).thenReturn(Optional.of(user));
+
+        userService.verifyEmailTokenAndActivateUser(token);
+
+        verify(userRepository).save(user);
+        assertTrue(user.isEmailVerified());
+    }
+
+    @Test
+    @DisplayName("유효하지 않은 토큰으로 이메일 인증을 시도하면 예외가 발생한다.")
+    void should_throw_exception_when_email_token_does_not_exist() {
+        // given
+        String invalidToken = "invalid-token";
+        when(userRepository.findByEmailVerificationToken(invalidToken)).thenReturn(Optional.empty());
+
+        // when & then
+        assertThrows(IllegalStateException.class, () -> {
+            userService.verifyEmailTokenAndActivateUser(invalidToken);
+        });
     }
 }

@@ -18,5 +18,5 @@ data class AuthUser (
         @Enumerated(EnumType.STRING)
         @Column(nullable = false)
         val provider: AuthProvider = AuthProvider.LOCAL,
-        val providerId: String? = null,
+        val providerId: String? = null, //oauth 필요
 ) : BaseEntity()

@@ -1,12 +1,12 @@
 server:
-  port: 5001
+  port: 5000
 
 spring:
   profiles:
     include: secret
 
   application:
-    name: user-service
+    name: auth-service
 
   jpa:
     hibernate:

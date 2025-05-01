@@ -15,7 +15,8 @@ import java.util.*
 class SignupService(
         private val authUserRepository: AuthUserRepository,
         private val emailVerificationTokenRepository: EmailVerificationTokenRepository,
-        private val passwordEncoder: PasswordEncoder
+        private val passwordEncoder: PasswordEncoder,
+        private val mailService: MailService
 ) {
     fun signupLocal(request: SignupRequest){
         if(authUserRepository.existsByEmail(request.email)){
@@ -39,5 +40,6 @@ class SignupService(
         emailVerificationTokenRepository.save(tokenEntity)
 
         //메일 전송로직 추가
+        mailService.sendVerificationMail(request.email, token)
     }
 }
